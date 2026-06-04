@@ -137,8 +137,21 @@ st.markdown("""
 
 @st.cache_resource(show_spinner=False)
 def load_model():
+    import torch
     from sdv.single_table import CTGANSynthesizer
-    return CTGANSynthesizer.load("ctgan_paysim.pkl")
+
+    # Forza il caricamento dei tensori MPS (salvati sul Mac) su CPU.
+    # Streamlit Cloud è CPU-only e non riconosce il device "mps".
+    _original_load = torch.load
+    def _cpu_load(*args, **kwargs):
+        kwargs["map_location"] = torch.device("cpu")
+        return _original_load(*args, **kwargs)
+    torch.load = _cpu_load
+    try:
+        synth = CTGANSynthesizer.load("ctgan_paysim.pkl")
+    finally:
+        torch.load = _original_load
+    return synth
 
 
 @st.cache_data(show_spinner=False)
