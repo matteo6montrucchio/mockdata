@@ -1,0 +1,7 @@
+streamlit==1.45.1
+sdv==1.17.2
+plotly==6.0.1
+pandas==2.2.3
+torch==2.6.0
+numpy==2.2.4
+kaggle==1.7.4.5
