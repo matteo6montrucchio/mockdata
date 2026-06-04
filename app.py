@@ -1,10 +1,7 @@
 import os
 os.environ["PYTORCH_ENABLE_MPS_FALLBACK"] = "0"
 os.environ["TOKENIZERS_PARALLELISM"] = "false"
-# Kaggle credentials da Streamlit secrets (solo in cloud)
-if hasattr(st, "secrets") and "kaggle" in st.secrets:
-    os.environ["KAGGLE_USERNAME"] = st.secrets["kaggle"]["username"]
-    os.environ["KAGGLE_KEY"]      = st.secrets["kaggle"]["key"]
+
 
 import torch
 torch.device("cpu")
@@ -23,6 +20,11 @@ st.set_page_config(
     initial_sidebar_state="collapsed"
 )
 
+# Kaggle credentials da Streamlit secrets (solo in cloud)
+if hasattr(st, "secrets") and "kaggle" in st.secrets:
+    os.environ["KAGGLE_USERNAME"] = st.secrets["kaggle"]["username"]
+    os.environ["KAGGLE_KEY"]      = st.secrets["kaggle"]["key"]
+    
 st.markdown("""
 <style>
   @import url('https://fonts.googleapis.com/css2?family=DM+Sans:wght@300;400;500;600&family=Space+Grotesk:wght@400;500;600;700&display=swap');
