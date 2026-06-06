@@ -156,25 +156,7 @@ def load_model():
 
 @st.cache_data(show_spinner=False)
 def load_real_sample():
-    if not os.path.exists("paysim.csv"):
-        import kaggle
-        with st.spinner("Downloading PaySim dataset (~470MB, first run only)..."):
-            kaggle.api.authenticate()
-            kaggle.api.dataset_download_files(
-                "ealaxi/paysim1",
-                path=".",
-                unzip=True
-            )
-            # Rinomina il file con il nome corretto
-            import glob
-            csv_files = glob.glob("PS_*.csv")
-            if csv_files:
-                os.rename(csv_files[0], "paysim.csv")
-
-    df = pd.read_csv("paysim.csv")
-    df = df[df["type"].isin(["TRANSFER", "CASH_OUT"])].copy()
-    df = df.drop(columns=["nameOrig", "nameDest", "isFlaggedFraud"])
-    return df.sample(n=10000, random_state=42)
+    return pd.read_csv("paysim_sample.csv")
 
 
 # ── Header ────────────────────────────────────────────────────────────────────
